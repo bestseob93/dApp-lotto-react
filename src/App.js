@@ -5,17 +5,32 @@ import web3 from './web3';
 import lotto from './lotto';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      manager: ''
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const manager = await lotto.methods.manager().call();
+      this.setState({
+        manager
+      });
+
+    } catch (e) {
+      if(e) throw e;
+    }
+  }
   render() {
     console.log(web3.eth.getAccounts().then(results => {console.log(results)}));
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <h2>Lotto Contract</h2>
+        <p>this contract is managed by</p>
+        <p>{this.state.manager}</p>
       </div>
     );
   }
